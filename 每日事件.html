@@ -915,6 +915,10 @@
         font-size: 12px;
       }
     }
+
+    .save-status {position:sticky;top:10px;z-index:70;max-width:1650px;margin:0 auto 16px;padding:12px 16px;border:1px solid #e6bd73;border-radius:14px;background:#fff8e8;color:#704e18;font-size:13px;line-height:1.6}
+    .save-status[hidden],.save-status button[hidden]{display:none}
+    .save-status button{margin:6px 6px 0 0;min-height:36px}
   </style>
 </head>
 
@@ -952,6 +956,7 @@
       </div>
     </header>
 
+    <div id="saveStatus" class="save-status" role="status" aria-live="polite" hidden><div id="saveStatusText"></div><button type="button" class="secondary-button" id="retrySave">重试保存 / 读取</button><button type="button" class="secondary-button" id="keepLocalChanges" hidden>相同内容保留本窗口修改</button><button type="button" class="secondary-button" id="loadOtherChanges" hidden>放弃未保存修改并加载最新</button></div>
     <main class="layout">
       <section class="panel date-panel">
         <div class="panel-header">
@@ -1273,6 +1278,19 @@
       }
     };
 
+    const CHANGE_PREFIX = STORAGE_KEY + ":change:";
+    const persistence = {
+      base: null, clock: 0, dirty: false, error: "", conflict: false,
+      pendingRecord: null, pendingView: null, seenConflictClock: 0, notice: ""
+    };
+    let editingSnapshot = null;
+    let settingsSnapshot = null;
+    let eventIndex = new Map();
+    let orderedDays = new Map();
+    let dayCounts = new Map();
+    let inboxEvents = [];
+
+
     let state = loadState();
 
     let visibleStart = startOfDay(new Date());
@@ -1286,48 +1304,233 @@
 
     let firstRender = true;
 
-    function loadState() {
-      const saved = localStorage.getItem(STORAGE_KEY);
+    function sameValue(a, b) {
+      return JSON.stringify(a) === JSON.stringify(b);
+    }
 
-      if (!saved) {
-        return structuredClone(defaultState);
+    function normalizeData(value) {
+      const defaults = structuredClone(defaultState);
+      const data = value && typeof value === "object" ? value : {};
+      return {
+        events: Array.isArray(data.events) ? data.events.filter(event =>
+          event && typeof event.id === "string" && typeof event.title === "string"
+        ).map(event => ({...event, alertCount: Number(event.alertCount || 0)})) : [],
+        inboxOrder: Array.isArray(data.inboxOrder) ? data.inboxOrder : [],
+        dayOrders: data.dayOrders && typeof data.dayOrders === "object" ? data.dayOrders : {},
+        settings: {...defaults.settings, ...(data.settings || {})}
+      };
+    }
+
+    function makeChanges(before, after) {
+      const changes = {events: [], settings: {}, dayOrders: {}, inboxOrder: null};
+      const oldEvents = new Map(before.events.map(event => [event.id, event]));
+      const newEvents = new Map(after.events.map(event => [event.id, event]));
+      for (const [id, event] of oldEvents) {
+        if (!newEvents.has(id)) changes.events.push({id, deleted: true, before: event});
       }
+      for (const [id, event] of newEvents) {
+        const old = oldEvents.get(id);
+        if (!old) { changes.events.push({id, created: true, value: event}); continue; }
+        const fields = {};
+        for (const key of new Set([...Object.keys(old), ...Object.keys(event)])) {
+          if (!sameValue(old[key], event[key])) fields[key] = {before: old[key] ?? null, value: event[key] ?? null};
+        }
+        if (Object.keys(fields).length) changes.events.push({id, fields});
+      }
+      for (const key of Object.keys(after.settings)) {
+        if (!sameValue(before.settings[key], after.settings[key])) {
+          changes.settings[key] = {before: before.settings[key], value: after.settings[key]};
+        }
+      }
+      for (const key of new Set([...Object.keys(before.dayOrders), ...Object.keys(after.dayOrders)])) {
+        if (!sameValue(before.dayOrders[key] || [], after.dayOrders[key] || [])) changes.dayOrders[key] = after.dayOrders[key] || [];
+      }
+      if (!sameValue(before.inboxOrder, after.inboxOrder)) changes.inboxOrder = after.inboxOrder;
+      return changes;
+    }
 
-      try {
-        const parsed = JSON.parse(saved);
+    function hasChanges(changes) {
+      return changes.events.length || Object.keys(changes.settings).length ||
+        Object.keys(changes.dayOrders).length || changes.inboxOrder !== null;
+    }
 
-        return {
-          ...structuredClone(defaultState),
-          ...parsed,
-          events: Array.isArray(parsed.events)
-            ? parsed.events.map(event => ({
-                ...event,
-                alertCount: Number(event.alertCount || 0)
-              }))
-            : [],
-          inboxOrder: Array.isArray(parsed.inboxOrder)
-            ? parsed.inboxOrder
-            : [],
-          dayOrders:
-            parsed.dayOrders &&
-            typeof parsed.dayOrders === "object"
-              ? parsed.dayOrders
-              : {},
-          settings: {
-            ...defaultState.settings,
-            ...(parsed.settings || {})
+    function applyChanges(data, changes, eventMap) {
+      const events = eventMap || new Map(data.events.map(event => [event.id, event]));
+      for (const change of changes.events) {
+        if (change.deleted) events.delete(change.id);
+        else if (change.created) events.set(change.id, structuredClone(change.value));
+        else if (events.has(change.id)) {
+          const event = events.get(change.id);
+          for (const [key, field] of Object.entries(change.fields)) event[key] = field.value;
+        }
+      }
+      if (!eventMap) data.events = [...events.values()];
+      for (const [key, field] of Object.entries(changes.settings)) data.settings[key] = field.value;
+      for (const [key, order] of Object.entries(changes.dayOrders)) data.dayOrders[key] = [...order];
+      if (changes.inboxOrder !== null) data.inboxOrder = [...changes.inboxOrder];
+    }
+
+    function changesConflict(changes, remote, eventMap) {
+      const events = eventMap || new Map(remote.events.map(event => [event.id, event]));
+      for (const change of changes.events) {
+        const current = events.get(change.id);
+        if (change.deleted) { if (current && !sameValue(current, change.before)) return true; }
+        else if (change.created) { if (current && !sameValue(current, change.value)) return true; }
+        else {
+          if (!current) return true;
+          for (const [key, field] of Object.entries(change.fields)) {
+            const value = current[key] ?? null;
+            if (!sameValue(value, field.before) && !sameValue(value, field.value)) return true;
           }
-        };
-      } catch {
+        }
+      }
+      return Object.entries(changes.settings).some(([key, field]) =>
+        !sameValue(remote.settings[key], field.before) && !sameValue(remote.settings[key], field.value)
+      );
+    }
+
+    function readStoredState() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      const data = normalizeData(raw ? JSON.parse(raw) : null);
+      const records = [];
+      for (let index = 0; index < localStorage.length; index++) {
+        const key = localStorage.key(index);
+        if (!key || !key.startsWith(CHANGE_PREFIX)) continue;
+        const value = localStorage.getItem(key);
+        if (value) {
+          const record = JSON.parse(value);
+          if (record.version !== 1 || !Number.isSafeInteger(record.clock) || !record.id || !record.changes) throw Error("Invalid local changes");
+          records.push(record);
+        }
+      }
+      records.sort((a, b) => a.clock - b.clock || a.id.localeCompare(b.id));
+      let conflictClock = 0;
+      const events = new Map(data.events.map(event => [event.id, event]));
+      for (const record of records) {
+        if (changesConflict(record.changes, data, events)) conflictClock = record.clock;
+        applyChanges(data, record.changes, events);
+      }
+      data.events = [...events.values()];
+      normalizeOrderData(data);
+      return {state: data, clock: records.at(-1)?.clock || 0, conflictClock};
+    }
+
+    function loadState() {
+      try {
+        const stored = readStoredState();
+        persistence.base = structuredClone(stored.state);
+        persistence.clock = stored.clock;
+        persistence.seenConflictClock = stored.conflictClock;
+        return stored.state;
+      } catch (error) {
+        persistence.error = "无法读取本地数据。请检查浏览器存储权限；恢复前不会覆盖原数据。";
+        persistence.base = structuredClone(defaultState);
         return structuredClone(defaultState);
       }
     }
 
-    function saveState() {
-      localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(state)
-      );
+    function recordId() {
+      return globalThis.crypto?.randomUUID?.() || Date.now().toString(36) + "-" + Math.random().toString(36).slice(2) + "-" + Math.random().toString(36).slice(2);
+    }
+
+    function saveState(options = {}) {
+      try {
+        // A successful setItem followed by a failed read must not duplicate an edit.
+        if (persistence.pendingRecord) {
+          const key = CHANGE_PREFIX + persistence.pendingRecord.id;
+          if (!localStorage.getItem(key)) localStorage.setItem(key, JSON.stringify(persistence.pendingRecord));
+          const extra = makeChanges(persistence.pendingView, state);
+          const stored = readStoredState();
+          state = stored.state;
+          persistence.base = structuredClone(state);
+          if (hasChanges(extra)) applyChanges(state, extra);
+          persistence.clock = stored.clock;
+          persistence.pendingRecord = null;
+          persistence.pendingView = null;
+          persistence.dirty = !!hasChanges(extra);
+          persistence.error = "";
+          normalizeOrders();
+        }
+        const changes = makeChanges(persistence.base, state);
+        if (!hasChanges(changes)) { persistence.dirty = false; updateSaveStatus(); return !persistence.error; }
+        persistence.dirty = true;
+        const stored = readStoredState();
+        if (!options.force && changesConflict(changes, stored.state)) {
+          persistence.conflict = true;
+          persistence.error = "另一个窗口修改了相同事件或设置。当前修改尚未保存，请选择要保留的内容。";
+          updateSaveStatus();
+          return false;
+        }
+        if (options.force) {
+          const remoteIds = new Set(stored.state.events.map(event => event.id));
+          for (const change of changes.events) {
+            if (change.fields && !remoteIds.has(change.id)) {
+              change.created = true;
+              change.value = structuredClone(state.events.find(event => event.id === change.id));
+              delete change.fields;
+            }
+          }
+        }
+        // Each edit has its own immutable key: simultaneous windows never replace
+        // each other's complete snapshot, even without a cross-window lock API.
+        const record = {version: 1, id: recordId(), clock: stored.clock + 1, changes};
+        localStorage.setItem(CHANGE_PREFIX + record.id, JSON.stringify(record));
+        persistence.pendingRecord = record;
+        persistence.pendingView = structuredClone(state);
+        const merged = readStoredState();
+        state = merged.state;
+        normalizeOrders();
+        persistence.base = structuredClone(state);
+        persistence.clock = merged.clock;
+        persistence.pendingRecord = null;
+        persistence.pendingView = null;
+        persistence.dirty = false;
+        persistence.conflict = false;
+        persistence.error = "";
+        persistence.notice = merged.conflictClock > persistence.seenConflictClock ? "已保存。检测到多窗口对相同内容的修改，请核对当前结果。" : "";
+        persistence.seenConflictClock = merged.conflictClock;
+        updateSaveStatus();
+        return true;
+      } catch (error) {
+        persistence.dirty = true;
+        persistence.error = error?.name === "QuotaExceededError"
+          ? "保存失败：浏览器本地存储空间不足。当前修改只在本窗口，尚未安全保存，请勿关闭页面。"
+          : "保存失败：无法访问浏览器本地存储。当前修改只在本窗口，请勿关闭页面，恢复权限后重试。";
+        updateSaveStatus();
+        return false;
+      }
+    }
+
+    function updateSaveStatus() {
+      const banner = document.getElementById("saveStatus");
+      if (!banner) return;
+      banner.hidden = !persistence.error && !persistence.notice;
+      document.getElementById("saveStatusText").textContent = persistence.error || persistence.notice;
+      document.getElementById("retrySave").hidden = persistence.conflict;
+      document.getElementById("retrySave").textContent = persistence.error ? "重试保存 / 读取" : "知道了";
+      document.getElementById("keepLocalChanges").hidden = !persistence.conflict;
+      document.getElementById("loadOtherChanges").hidden = !persistence.conflict;
+    }
+
+    function refreshOtherWindows() {
+      if (persistence.dirty || persistence.pendingRecord) return;
+      try {
+        const stored = readStoredState();
+        if (!sameValue(stored.state, persistence.base)) {
+          state = stored.state;
+          persistence.base = structuredClone(state);
+          persistence.clock = stored.clock;
+          persistence.error = "";
+          persistence.notice = stored.conflictClock > persistence.seenConflictClock
+            ? "其他窗口更新了相同内容，请核对当前显示结果。"
+            : "已合并其他窗口的修改。尚未提交的表单内容仍保留。";
+          persistence.seenConflictClock = stored.conflictClock;
+          renderAll({persist: false});
+        }
+      } catch (error) {
+        persistence.error = "无法读取其他窗口的更新，请检查本地存储权限后重试。";
+        updateSaveStatus();
+      }
     }
 
     function startOfDay(value) {
@@ -1377,11 +1580,7 @@
         .replaceAll("'", "&#039;");
     }
 
-    function getEvent(eventId) {
-      return state.events.find(
-        event => event.id === eventId
-      );
-    }
+    function getEvent(eventId) { return eventIndex.get(eventId); }
 
     function getAlertText(alertCount) {
       const count = Number(alertCount || 0);
@@ -1411,98 +1610,69 @@
       return "";
     }
 
+    function normalizeOrderData(data) {
+      const byId = new Map(data.events.map(event => [event.id, event]));
+      const inboxIds = [];
+      const seenInbox = new Set();
+      for (const id of data.inboxOrder) {
+        if (byId.has(id) && !byId.get(id).date && !seenInbox.has(id)) {
+          seenInbox.add(id); inboxIds.push(id);
+        }
+      }
+      const orders = {};
+      const seenDays = new Map();
+      for (const [date, ids] of Object.entries(data.dayOrders)) {
+        const seen = new Set();
+        const valid = [];
+        for (const id of Array.isArray(ids) ? ids : []) {
+          if (byId.get(id)?.date === date && !seen.has(id)) { seen.add(id); valid.push(id); }
+        }
+        if (valid.length) { orders[date] = valid; seenDays.set(date, seen); }
+      }
+      for (const event of data.events) {
+        if (!event.date) {
+          if (!seenInbox.has(event.id)) {seenInbox.add(event.id); inboxIds.push(event.id);}
+        } else {
+          if (!orders[event.date]) {orders[event.date] = []; seenDays.set(event.date, new Set());}
+          if (!seenDays.get(event.date).has(event.id)) {
+            seenDays.get(event.date).add(event.id); orders[event.date].push(event.id);
+          }
+        }
+      }
+      data.inboxOrder = inboxIds;
+      data.dayOrders = orders;
+      const days = new Map();
+      const counts = new Map();
+      for (const [date, ids] of Object.entries(orders)) {
+        const todo = [], done = [];
+        for (const id of ids) {
+          const event = byId.get(id);
+          (event.status === "done" ? done : todo).push(event);
+        }
+        days.set(date, [...todo, ...done]);
+        counts.set(date, {total: ids.length, done: done.length, todo: todo.length});
+      }
+      return {byId, days, counts, inbox: inboxIds.map(id => byId.get(id))};
+    }
+
     function normalizeOrders() {
-      const eventIds = new Set(
-        state.events.map(event => event.id)
-      );
-
-      state.inboxOrder = state.inboxOrder.filter(
-        eventId => {
-          const event = getEvent(eventId);
-
-          return eventIds.has(eventId) && event && !event.date;
-        }
-      );
-
-      state.events
-        .filter(event => !event.date)
-        .forEach(event => {
-          if (!state.inboxOrder.includes(event.id)) {
-            state.inboxOrder.push(event.id);
-          }
-        });
-
-      Object.keys(state.dayOrders).forEach(key => {
-        const validIds = state.dayOrders[key].filter(
-          eventId => {
-            const event = getEvent(eventId);
-
-            return event && event.date === key;
-          }
-        );
-
-        state.dayOrders[key] = validIds;
-
-        if (!validIds.length) {
-          delete state.dayOrders[key];
-        }
-      });
-
-      state.events
-        .filter(event => event.date)
-        .forEach(event => {
-          if (!state.dayOrders[event.date]) {
-            state.dayOrders[event.date] = [];
-          }
-
-          if (
-            !state.dayOrders[event.date].includes(event.id)
-          ) {
-            state.dayOrders[event.date].push(event.id);
-          }
-        });
+      const index = normalizeOrderData(state);
+      eventIndex = index.byId;
+      orderedDays = index.days;
+      dayCounts = index.counts;
+      inboxEvents = index.inbox;
     }
 
     function getOrderedDayEvents(key) {
-      normalizeOrders();
-
-      const ids = state.dayOrders[key] || [];
-
-      const events = ids
-        .map(eventId => getEvent(eventId))
-        .filter(Boolean);
-
-      const unfinished = events.filter(
-        event => event.status !== "done"
-      );
-
-      const completed = events.filter(
-        event => event.status === "done"
-      );
-
-      return [...unfinished, ...completed];
+      return orderedDays.get(key) || [];
     }
 
     function getInboxEvents() {
-      normalizeOrders();
-
-      return state.inboxOrder
-        .map(eventId => getEvent(eventId))
-        .filter(Boolean);
+      return inboxEvents;
     }
 
     function getDayCounts(key) {
-      const events = getOrderedDayEvents(key);
-
-      return {
-        total: events.length,
-        done: events.filter(
-          event => event.status === "done"
-        ).length,
-        todo: events.filter(
-          event => event.status !== "done"
-        ).length
-      };
+      return dayCounts.get(key) || {total: 0, done: 0, todo: 0};
     }
 
     function hexToRgb(hex) {
@@ -1936,6 +2106,8 @@
 
     function renderAll(options = {}) {
       normalizeOrders();
+      const saved = options.persist === false ? !persistence.dirty : saveState();
+      normalizeOrders();
       applySettings();
       renderDateStream({
         keepScroll: options.keepScroll ?? !firstRender
@@ -1943,11 +2115,9 @@
       renderInbox();
       renderLargeCalendar();
       updateDateRangeHint();
-      saveState();
-
-      if (firstRender) {
-        firstRender = false;
-      }
+      updateSaveStatus();
+      if (firstRender) firstRender = false;
+      return saved;
     }
 
     function removeEventFromAllOrders(eventId) {
@@ -2095,6 +2265,7 @@
     }
 
     function clearEventForm() {
+      editingSnapshot = null;
       document.getElementById(
         "editingEventId"
       ).value = "";
@@ -2155,6 +2326,7 @@
         return;
       }
 
+      editingSnapshot = structuredClone(event);
       document.getElementById(
         "editingEventId"
       ).value = event.id;
@@ -2234,7 +2406,7 @@
           "eventStatus"
         ).value;
 
-      const date =
+      let date =
         document.getElementById(
           "eventDate"
         ).value || null;
@@ -2265,25 +2437,23 @@
         const oldStatus = event.status;
         const oldDate = event.date;
 
-        event.title = title;
-        event.status = status;
-        event.color = color.toUpperCase();
-        event.alertCount =
-          alertCount === 1 || alertCount === 3
-            ? alertCount
-            : 0;
-        event.notes = notes;
+        const fields = {title, status, color: color.toUpperCase(),
+          alertCount: alertCount === 1 || alertCount === 3 ? alertCount : 0, notes};
+        for (const [key, value] of Object.entries(fields)) {
+          if (!editingSnapshot || !sameValue(editingSnapshot[key], value)) event[key] = value;
+        }
+        if (editingSnapshot && date === (editingSnapshot.date || null)) date = oldDate;
         event.date = oldDate;
 
         event.completedAt =
-          status === "done"
+          event.status === "done"
             ? event.completedAt ||
               new Date().toISOString()
             : null;
 
         if (
           oldStatus !== "done" &&
-          status === "done"
+          event.status === "done"
         ) {
           celebrate();
         }
@@ -2331,6 +2501,9 @@
         };
 
         state.events.push(event);
+        document.getElementById("editingEventId").value = event.id;
+        editingSnapshot = structuredClone(event);
+        normalizeOrders();
 
         if (date) {
           insertEventIntoDay(
@@ -2347,8 +2520,7 @@
         }
       }
 
-      clearEventForm();
-      renderAll();
+      if (renderAll()) clearEventForm();
     }
 
     function celebrate() {
@@ -2485,6 +2657,7 @@ function jumpToDate(key, options = {}) {
     }
 
     function openSettings() {
+      settingsSnapshot = structuredClone(state.settings);
       document.getElementById(
         "settingsTitle"
       ).value = state.settings.title;
@@ -2786,33 +2959,16 @@ requestAnimationFrame(() => {
             return;
           }
 
-          state.settings.title = title;
-          state.settings.subtitle =
-            subtitle;
-
-          state.settings.primaryColor =
-            document
-              .getElementById(
-                "primaryColor"
-              )
-              .value.toUpperCase();
-
-          state.settings.secondaryColor =
-            document
-              .getElementById(
-                "secondaryColor"
-              )
-              .value.toUpperCase();
-
-          state.settings.backgroundColor =
-            document
-              .getElementById(
-                "backgroundColor"
-              )
-              .value.toUpperCase();
-
-          saveState();
-          applySettings();
+          const edited = {
+            title, subtitle,
+            primaryColor: document.getElementById("primaryColor").value.toUpperCase(),
+            secondaryColor: document.getElementById("secondaryColor").value.toUpperCase(),
+            backgroundColor: document.getElementById("backgroundColor").value.toUpperCase()
+          };
+          for (const [key, value] of Object.entries(edited)) {
+            if (!settingsSnapshot || !sameValue(settingsSnapshot[key], value)) state.settings[key] = value;
+          }
+          if (!renderAll()) return;
           closeModal("settingsModal");
         }
       );
@@ -3011,6 +3167,50 @@ requestAnimationFrame(() => {
           }
         }
       );
+
+    document.getElementById("retrySave").addEventListener("click", () => {
+      persistence.notice = "";
+      if (persistence.dirty) renderAll();
+      else {
+        try {
+          const stored = readStoredState();
+          state = stored.state;
+          persistence.base = structuredClone(state);
+          persistence.error = "";
+          renderAll({persist: false});
+        } catch (error) { persistence.error = "仍然无法读取本地数据，请检查浏览器存储权限。"; updateSaveStatus(); }
+      }
+    });
+    document.getElementById("keepLocalChanges").addEventListener("click", () => {
+      if (saveState({force: true})) renderAll({persist: false});
+    });
+    document.getElementById("loadOtherChanges").addEventListener("click", () => {
+      if (!confirm("放弃本窗口尚未保存的修改，加载其他窗口的最新数据？")) return;
+      try {
+        const stored = readStoredState();
+        state = stored.state;
+        persistence.base = structuredClone(state);
+        persistence.dirty = false;
+        persistence.conflict = false;
+        persistence.error = "";
+        clearEventForm();
+        renderAll({persist: false});
+      } catch (error) { persistence.error = "无法读取最新数据，当前修改仍保留在本窗口。"; updateSaveStatus(); }
+    });
+    let storageRefreshTimer;
+    window.addEventListener("storage", event => {
+      if (event.key === null || event.key === STORAGE_KEY || event.key.startsWith(CHANGE_PREFIX)) {
+        clearTimeout(storageRefreshTimer);
+        storageRefreshTimer = setTimeout(refreshOtherWindows, 40);
+      }
+    });
+    window.addEventListener("focus", refreshOtherWindows);
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") refreshOtherWindows();
+    });
+    window.addEventListener("beforeunload", event => {
+      if (persistence.dirty || persistence.pendingRecord) { event.preventDefault(); event.returnValue = ""; }
+    });
 
     setupDragAndDrop();
     applySettings();
