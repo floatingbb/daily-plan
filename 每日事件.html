@@ -915,15 +915,114 @@
         font-size: 12px;
       }
     }
+  
+.cloudbar{max-width:1650px;margin:0 auto 18px;display:flex;flex-wrap:wrap;align-items:center;gap:9px;padding:12px 16px;background:#ffffffc9;border:1px solid var(--line);border-radius:16px;font-size:12px}
+.cloudbar button,.cloudbar a,.import-label{border:1px solid var(--line);background:white;color:var(--title);padding:9px 12px;border-radius:10px;text-decoration:none;cursor:pointer}
+#accountLabel{overflow:hidden;text-overflow:ellipsis;max-width:250px}#syncStatus{color:#527a64;margin-right:auto}
+dialog{width:min(460px,calc(100% - 28px));border:1px solid var(--line);border-radius:20px;padding:26px;color:var(--text);box-shadow:var(--shadow)}dialog::backdrop{background:#30293b66}dialog p{line-height:1.7}dialog button{margin:4px}
+.mobile-order{display:none}button,a,input,select,textarea{touch-action:manipulation}button{min-height:36px}.event-title,.event-notes{overflow-wrap:anywhere}
+@media(max-width:760px){
+html,body{max-width:100%;overflow-x:hidden}.app{padding:12px 12px max(20px,env(safe-area-inset-bottom))}
+h1{font-size:26px}.topbar{gap:12px}.top-actions{width:100%;display:flex}.top-actions button{flex:1;min-height:44px}
+.cloudbar{padding:10px;gap:7px}#accountLabel{max-width:calc(100vw - 60px);width:100%}#syncStatus{width:100%}
+.layout{gap:14px;min-height:0;height:auto}.date-panel{min-height:0;height:65dvh;padding:14px}.event-panel{min-height:0;height:auto;padding:14px}.date-stream{min-height:0;overscroll-behavior:contain}.inbox-list{max-height:40dvh;min-height:100px}
+.panel-header{gap:8px}.panel-title{font-size:17px}.panel-description{font-size:12px}.event-form{margin-top:18px}input,select,textarea{font-size:16px!important;min-width:0}.event-actions{gap:4px}.icon-button{min-width:34px;min-height:36px}.mobile-order{display:inline-flex;align-items:center;justify-content:center}
+.modal-layer{padding:10px}.modal{max-height:90dvh;overflow:auto;padding:14px}.calendar-grid{gap:3px}.calendar-day{padding:4px;min-width:0}.calendar-counts{overflow-wrap:anywhere}.settings-grid{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
 
-    .save-status {position:sticky;top:10px;z-index:70;max-width:1650px;margin:0 auto 16px;padding:12px 16px;border:1px solid #e6bd73;border-radius:14px;background:#fff8e8;color:#704e18;font-size:13px;line-height:1.6}
-    .save-status[hidden],.save-status button[hidden]{display:none}
-    .save-status button{margin:6px 6px 0 0;min-height:36px}
-  </style>
+
+.save-warning{position:sticky;top:10px;z-index:70;max-width:1650px;margin:0 auto 14px;padding:12px 16px;border:1px solid #e6bd73;border-radius:14px;background:#fff8e8;color:#704e18;font-size:13px;line-height:1.6}.save-warning[hidden]{display:none}.save-warning button,.save-warning a{margin:6px 8px 0 0;min-height:36px}
+/* Mobile workspace: compact agenda, a separate inbox, and a reusable editor sheet. */
+.mobile-tabs,.mobile-schedule-tools,.mobile-range-nav,.mobile-create,.mobile-date-plus,.mobile-day-add,.event-menu{display:none}
+.cloud-menu{position:relative;margin-left:auto}.cloud-menu>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:5px;padding:8px 10px;border-radius:10px;color:var(--title);font-weight:650}.cloud-menu>summary::-webkit-details-marker,.event-menu>summary::-webkit-details-marker{display:none}
+.cloud-menu-content{position:absolute;right:0;top:calc(100% + 8px);width:240px;z-index:90;display:grid;gap:7px;padding:14px;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 16px 40px #5c587426}.cloud-menu-content[hidden]{display:none}.cloud-menu:not([open]) .cloud-menu-content{display:none}.cloud-menu-content #accountLabel{display:block;max-width:100%;padding:3px 2px 9px;font-size:12px;color:var(--muted);overflow-wrap:anywhere;white-space:normal}.cloud-menu-content button,.cloud-menu-content a,.cloud-menu-content label{width:100%;text-align:left;min-height:40px;justify-content:flex-start}
+.sync-dot{width:7px;height:7px;flex:0 0 auto;border-radius:50%;background:var(--theme-primary)}.cloudbar{padding:8px 12px;gap:8px}.cloudbar #syncStatus{margin-right:0;flex:1;min-width:0}.mobile-editor{padding:0;border:0;color:var(--text);background:white}.mobile-editor::backdrop{background:#30283d66;backdrop-filter:blur(3px)}.mobile-editor-heading{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 12px;gap:12px}.mobile-editor-heading h2{margin:0;font-size:19px;font-weight:750;color:var(--title)}.mobile-editor-heading p{margin:4px 0 0;font-size:12px;color:var(--muted)}.mobile-editor-close{display:grid;place-items:center;min-width:36px;min-height:36px;border:0;border-radius:50%;background:#f3f1f5;color:var(--title);font-size:22px}
+@media(max-width:760px){
+ :root{--muted:#7c7d8e}html{scroll-padding-top:16px}body{background:linear-gradient(160deg,#fcf7fa 0%,var(--theme-background) 55%,#f7f5fc 100%);-webkit-tap-highlight-color:transparent}
+ .app{display:flex;flex-direction:column;padding:20px 16px calc(100px + env(safe-area-inset-bottom));min-height:100dvh;gap:0}
+ .topbar{order:0;display:block;width:100%;margin:0 0 8px;gap:0}.topbar>div:first-child{width:100%}.eyebrow{display:none}.title-line{gap:8px;justify-content:space-between}.title-line h1{font-size:28px;line-height:1.25;letter-spacing:-.8px;font-weight:760}.title-line #settingsButton{width:36px;height:36px;min-height:36px;min-width:36px;border-color:#e9e3eb;background:#ffffffa6;border-radius:12px;box-shadow:none}.title-line #settingsButton svg{width:18px;height:18px}
+ .subtitle{font-size:12px;line-height:1.65;margin:6px 44px 0 0;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.top-actions{display:none}
+ .cloudbar{order:1;width:100%;max-width:none;background:transparent;border:0;box-shadow:none;padding:0;margin:0 0 16px;min-height:30px;gap:7px;flex-wrap:nowrap}.cloudbar #syncStatus{width:auto;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#758477}.cloud-menu>summary{font-size:12px;padding:6px 0 6px 12px;white-space:nowrap}.cloud-menu-content{width:min(256px,calc(100vw - 32px));padding:12px}.cloud-menu-content #accountLabel{width:auto;max-width:100%;font-size:12px}.cloud-menu-content button,.cloud-menu-content a,.cloud-menu-content label{font-size:13px;padding:10px 12px;min-height:42px}
+ .save-warning{order:2;top:8px;font-size:12px;margin-bottom:12px;padding:10px 12px}.save-warning button,.save-warning a{font-size:12px}
+ .mobile-tabs{order:3;display:grid;grid-template-columns:1fr 1fr;width:100%;padding:4px;gap:4px;border-radius:15px;background:#ede8ef;margin:0 0 16px}.mobile-tabs button{display:flex;align-items:center;justify-content:center;gap:7px;min-height:42px;border:0;border-radius:11px;background:transparent;color:#8b8091;font-size:14px;font-weight:650}.mobile-tabs button[aria-selected="true"]{background:#fff;color:var(--title);box-shadow:0 2px 8px #67597712}.mobile-inbox-count{min-width:20px;padding:1px 6px;border-radius:9px;background:#e9e1ec;color:#8b7193;font-size:10px;line-height:16px}
+ .layout{order:4;display:block;width:100%;height:auto;min-height:0;margin:0}.panel{border:1px solid #ece6eb;border-radius:20px;box-shadow:0 5px 22px #68567405;background:#ffffffed}.date-panel,.event-panel{padding:16px;min-height:0;height:auto}.date-panel{display:flex}.event-panel{display:none}.app[data-mobile-view="inbox"] .date-panel{display:none}.app[data-mobile-view="inbox"] .event-panel{display:flex}
+ .panel-header{align-items:center;gap:8px;margin-bottom:12px}.panel-title{font-size:16px;font-weight:730;letter-spacing:-.2px}.panel-description{display:none}.schedule-title-row{gap:8px}.current-month-label{font-size:10px;padding:4px 8px;font-weight:600;background:#f7eef5;color:#ae789d}#dateRangeHint{max-width:138px;font-size:10px;font-weight:500;padding:0;background:none;color:#8a8290;white-space:nowrap}.event-panel #newEventButton{display:none}
+ .mobile-schedule-tools{display:flex;justify-content:space-between;gap:8px;margin:0 0 6px}.mobile-schedule-tools button{display:flex;align-items:center;justify-content:center;gap:6px;min-height:36px;padding:6px 10px;border:1px solid #eee8ed;background:#fff;border-radius:10px;font-size:12px;color:#786d81;flex:1}.mobile-schedule-tools svg{width:14px;height:14px}
+ .date-stream{flex:none;min-height:0;max-height:none;overflow:visible;padding:0;overscroll-behavior:auto}.day-card{position:relative;display:grid;grid-template-columns:53px minmax(0,1fr);gap:9px;padding:14px 0;margin:0;border:0;border-bottom:1px solid #f0ebef;border-radius:0;background:transparent;box-shadow:none!important}.day-card:hover{background:transparent;border-color:#f0ebef}.day-card:last-child{border-bottom:0}.day-card.today{background:linear-gradient(90deg,#fcf5fa,transparent);margin:0 -7px;padding-right:7px;padding-left:7px;border-radius:13px}.day-header{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;margin:0;gap:5px}.day-main-label{display:flex;flex-direction:column;align-items:flex-start;gap:3px}.day-number{font-size:24px;line-height:1.1;font-weight:720;color:var(--title)}.day-weekday{font-size:10px;font-weight:550;color:#9c849d}.today-badge{font-size:9px;padding:2px 5px;line-height:1.3;border-radius:5px}.day-summary{font-size:9px;line-height:1.5;color:#9a8fa0;max-width:50px}.day-empty .day-summary{display:none}.day-events{min-width:0;display:flex;flex-direction:column;gap:7px}.drop-slot{min-height:0;margin:0;padding:0;border:0;border-radius:0;background:transparent}.drop-slot .empty-slot{display:none}.day-empty .slot-empty:not(:first-child),.day-card:not(.day-empty) .slot-empty{display:none}
+ .mobile-day-add{display:flex;align-items:center;justify-content:flex-start;gap:7px;width:100%;min-height:44px;padding:8px 12px;margin:1px 0 0;border:1px dashed #e9e0e9;border-radius:12px;background:#fcfafc;color:#aa98ad;font-size:11px;text-align:left}.mobile-day-add span{font-size:15px;font-weight:400;color:#baa8bd}.mobile-date-plus{display:block;width:27px;min-height:27px;padding:0;border:1px solid #ebe4eb;border-radius:8px;color:#9d85a4;background:#fff;font-size:18px;font-weight:400}.day-empty .mobile-date-plus{display:none}
+ .event-card{gap:9px;padding:11px 10px;min-height:0;border:1px solid #eee8ed;border-left:3px solid var(--event-color,#fff);border-radius:13px;box-shadow:0 2px 6px #6c587406;cursor:default}.event-card:hover{transform:none;box-shadow:none}.event-card:active{cursor:default}.event-check{width:20px;height:20px;margin-top:2px;padding:0;flex:0 0 20px;min-height:20px;border-radius:6px}.event-title{font-size:13px;line-height:1.5;font-weight:650;color:#63596d}.event-notes{font-size:11px;line-height:1.55;margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.event-meta{gap:4px;margin-top:6px}.event-tag{font-size:9px;line-height:1.4;padding:3px 6px;font-weight:550}.event-actions{flex-direction:row;gap:0;margin:-3px -4px 0 0;align-self:flex-start}.event-actions>button{display:none!important}
+ .event-menu{display:block;position:relative}.event-menu>summary{list-style:none;display:flex;align-items:center;justify-content:center;width:32px;min-height:32px;color:#aa9bb0;border:0;background:transparent;font-size:18px;border-radius:9px;cursor:pointer;letter-spacing:1px}.event-menu[open]>summary{background:#f4eef5}.event-menu-list{position:absolute;right:0;top:36px;width:138px;z-index:45;padding:5px;border:1px solid #e9e1eb;border-radius:12px;background:#fff;box-shadow:0 12px 32px #5c467326;display:grid;gap:1px}.event-menu-list button{display:flex;align-items:center;gap:10px;padding:9px 11px;width:100%;min-height:42px;border:0;border-radius:8px;background:#fff;color:#75677f;text-align:left;font-size:12px}.event-menu-list button:active{background:#f5eff6}.event-menu-list .menu-delete{color:#b96e80}
+ .inbox-list{min-height:0;max-height:none;flex:none;padding:0;border:0;border-radius:0;background:transparent;overflow:visible}.inbox-list .event-card{margin-bottom:10px}.inbox-drop-hint{min-height:190px;padding:30px 16px;border:1px dashed #e8e0eb;border-radius:14px;background:#fcfafd;font-size:12px;color:#a08fa8}
+ .mobile-range-nav{display:flex;justify-content:space-between;gap:10px;padding-top:14px;border-top:1px solid #f0ebef;margin-top:5px}.mobile-range-nav button{min-height:38px;padding:8px 12px;border:1px solid #ece5ee;border-radius:10px;background:#fff;color:#8c7897;font-size:12px;flex:1}
+ .mobile-create{display:flex;align-items:center;justify-content:center;gap:7px;position:fixed;right:20px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:44;min-height:50px;padding:13px 20px;border:1px solid #ffffff60;border-radius:17px;background:#7c6789;background:color-mix(in srgb,var(--theme-primary) 44%,#655072);color:white;box-shadow:0 8px 25px #73578338;font-size:14px;font-weight:650}.mobile-create span{font-size:22px;font-weight:400;line-height:18px}
+ .mobile-editor{position:fixed;inset:auto 0 0;margin:0;width:100%;max-width:none;max-height:calc(var(--mobile-viewport-height,100dvh) - 14px);border-radius:24px 24px 0 0;overflow-y:auto;overscroll-behavior:contain;box-shadow:0 -14px 50px #382b4622}.mobile-editor:not([open]){display:none}.mobile-editor-warning{margin:0 18px 10px;padding:10px 12px;border:1px solid #e6bd73;border-radius:10px;background:#fff8e8;color:#704e18;font-size:12px;line-height:1.6}.mobile-editor-warning[hidden]{display:none}.mobile-editor-heading{position:sticky;top:0;z-index:2;background:#fffffff5;padding:18px 18px 12px;border-radius:24px 24px 0 0;backdrop-filter:blur(12px)}.mobile-editor-heading:before{content:"";position:absolute;width:32px;height:4px;background:#e8e1ea;border-radius:3px;top:7px;left:calc(50% - 16px)}
+ #mobileEditor #eventForm{margin:0;padding:5px 18px max(16px,env(safe-area-inset-bottom));border:0;border-radius:0;background:#fff;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px 12px;animation:none;box-shadow:none}#mobileEditor .form-group.full,#mobileEditor .form-actions{grid-column:1/-1}.form-label{font-size:11px;font-weight:600;color:#8a7c93}.mobile-editor input,.mobile-editor select,.mobile-editor textarea{font-size:16px!important;min-height:45px;padding:10px 11px;border:1px solid #eae3ed;border-radius:11px;background:#fcfafc;color:#65566e;min-width:0;width:100%;max-width:100%}.mobile-editor input[type="color"]{padding:4px;height:45px}.mobile-editor input[type="date"]{text-align:left;-webkit-appearance:none;appearance:none;display:block}.mobile-editor textarea{min-height:84px;height:84px}.mobile-editor .form-actions{position:sticky;bottom:0;z-index:2;background:#ffffffed;padding:12px 0 max(3px,env(safe-area-inset-bottom));margin-top:2px;display:grid;grid-template-columns:1fr 2fr;border-top:1px solid #f2edf3}.mobile-editor .form-actions button{min-height:46px;border-radius:12px;font-size:14px}.mobile-editor .form-actions .primary-button{background:#7c6789;background:color-mix(in srgb,var(--theme-primary) 44%,#655072);box-shadow:none}.mobile-editor .form-actions .secondary-button{color:#95839d}
+ .modal-layer{padding:14px;z-index:60}.modal{width:100%;max-height:86dvh;padding:18px;border-radius:20px}.modal-header,.calendar-modal-header{margin-bottom:14px;gap:10px}.modal-title{font-size:18px}.calendar-weekdays{gap:2px}.calendar-weekday{font-size:9px;padding:6px 0}.calendar-grid{gap:4px}.calendar-day{min-height:55px;padding:7px 3px;border-radius:10px}.calendar-day-number{font-size:12px}.calendar-counts{font-size:8px;line-height:1.5;margin-top:5px;gap:1px}.calendar-counts .all-count{display:none}.calendar-month-title{font-size:15px}.settings-modal .event-form{padding:0;margin-top:0;border:0;grid-template-columns:1fr;gap:13px}.settings-modal input,.settings-modal textarea{min-height:44px;font-size:16px}.settings-modal .form-actions button{min-height:44px;font-size:13px}
+}
+@media(max-width:360px){.app{padding-left:12px;padding-right:12px}.date-panel,.event-panel{padding:13px}.day-card{grid-template-columns:44px minmax(0,1fr);gap:7px}.event-card{gap:7px;padding:10px 8px}.mobile-day-add{padding:8px;font-size:10px}}
+@media(min-width:761px){#mobileEditor{display:none!important}}
+
+/* Keep the planning surfaces together: dates above, the unscheduled pool below. */
+.mobile-plan-caption,.touch-drag-handle,.touch-drag-help{display:none}
+.touch-drag-ghost{position:fixed;z-index:1000;pointer-events:none;width:220px;max-width:calc(100vw - 24px);padding:11px 13px;border:1px solid #d9c6dd;border-radius:13px;background:#fff;box-shadow:0 12px 38px #4f335338;color:#63516d;transform:rotate(-1deg)}.touch-drag-ghost strong{display:block;font-size:13px;line-height:1.45;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.touch-drag-ghost small{display:block;margin-top:4px;font-size:10px;color:#977f9f}.touch-drop-marker{position:fixed;height:3px;border-radius:3px;background:#b47fa9;z-index:999;pointer-events:none;box-shadow:0 0 0 2px #fff}.is-touch-dragging{opacity:.32!important;pointer-events:none}.touch-drop-target{outline:2px solid #d0a8c9!important;outline-offset:-2px;background:#fbf2f9!important}.touch-drag-active,.touch-drag-active *{user-select:none!important;-webkit-user-select:none!important}
+@media(max-width:760px){
+ html,body{height:100%;overflow:hidden;overscroll-behavior:none}
+ .app{height:100dvh;min-height:0;max-height:100dvh;overflow:hidden;padding:12px 12px max(10px,env(safe-area-inset-bottom));gap:0}
+ .topbar{margin-bottom:2px}.title-line h1{font-size:25px;line-height:1.2}.title-line #settingsButton{width:32px;height:32px;min-width:32px;min-height:32px}.subtitle{display:none}
+ .cloudbar{margin-bottom:6px;min-height:28px}.cloud-menu>summary{padding-top:4px;padding-bottom:4px}.cloud-menu-content{z-index:110}
+ .mobile-tabs{display:none!important}.mobile-plan-caption{display:block;order:3;margin:0 1px 9px;color:#9a879f;font-size:10px;line-height:1.5}.mobile-create{display:none!important}
+ .layout{order:4;display:flex!important;flex:1;flex-direction:column;gap:10px;min-height:0;overflow:hidden;width:100%}
+ .date-panel,.app[data-mobile-view="inbox"] .date-panel{display:flex!important;flex:1;min-height:145px;height:auto;padding:12px;overflow:hidden}
+ .event-panel,.app[data-mobile-view="inbox"] .event-panel{display:flex!important;flex:0 0 clamp(175px,30dvh,260px);min-height:0;height:clamp(175px,30dvh,260px);padding:11px 12px;overflow:hidden}
+ .panel-header{flex:0 0 auto;margin-bottom:7px}.panel-title{font-size:15px}.current-month-label{font-size:9px;padding:3px 6px}.schedule-title-row{gap:6px}#dateRangeHint{font-size:9px;max-width:115px}
+ .mobile-schedule-tools{margin-bottom:4px;flex:0 0 auto;gap:6px}.mobile-schedule-tools button{min-height:30px;font-size:10px;padding:4px 8px;border-radius:9px}
+ .date-stream{flex:1;min-height:0;max-height:none;overflow-y:auto;overscroll-behavior:contain;padding:0 3px 6px 0;scrollbar-width:thin;scrollbar-color:#d4b8d5 transparent}
+ .mobile-range-nav{flex:0 0 auto;margin-top:4px;padding-top:6px;gap:6px}.mobile-range-nav button{min-height:29px;padding:5px 8px;font-size:10px;border-radius:8px}
+ .day-card{grid-template-columns:47px minmax(0,1fr);gap:7px;padding:11px 0}.day-card.today{padding-left:5px;padding-right:5px;margin:0 -5px}.day-number{font-size:22px}.day-weekday{font-size:9px}.day-summary{font-size:8px}.day-header{gap:4px}.day-empty .mobile-date-plus{display:none}.mobile-day-add{min-height:42px;font-size:10px;padding:7px 10px}
+ .day-card:not(.day-empty) .slot-empty:first-child{display:none}.day-events{gap:6px}.event-panel #newEventButton{display:inline-flex;min-height:31px;min-width:0;flex-shrink:0;white-space:nowrap;font-size:11px;padding:6px 11px;border-radius:9px;box-shadow:none;background:#92739d;background:color-mix(in srgb,var(--theme-primary) 44%,#655072)}
+ .inbox-list{flex:1;min-height:0;max-height:none;overflow-y:auto;overscroll-behavior:contain;padding:0 3px 5px 0;border-radius:8px;scrollbar-width:thin;scrollbar-color:#d4b8d5 transparent}.inbox-drop-hint{min-height:100%;padding:16px 10px;font-size:11px;line-height:1.7}.inbox-list .event-card{margin-bottom:7px}
+ .event-card{gap:7px;padding:9px 8px;min-height:0;touch-action:pan-y;-webkit-touch-callout:none}.event-title{font-size:12px}.event-check{width:19px;height:19px;min-height:19px;flex-basis:19px}.event-meta{margin-top:4px}.event-tag{font-size:8px;padding:2px 5px}.event-notes{font-size:10px;line-height:1.4;margin-top:3px;-webkit-line-clamp:1}.event-actions{align-items:flex-start;gap:0;margin:-3px -3px 0 0}.event-menu>summary{width:27px;min-height:33px;font-size:17px}.event-menu-list{position:fixed;right:20px;top:110px;width:160px;z-index:120}.event-actions>button.touch-drag-handle{display:flex!important}
+ .touch-drag-handle{display:flex;align-items:center;justify-content:center;width:29px;min-width:29px;min-height:34px;padding:0;border:0;border-radius:8px;background:transparent;color:#baa6c0;font-size:21px;line-height:1;touch-action:none;cursor:grab;-webkit-touch-callout:none}.touch-drag-handle:active{background:#f2e8f3;color:#94739d}.event-actions .touch-drag-handle{width:29px;height:34px}
+ .save-warning{position:relative;top:auto;flex:0 0 auto;max-height:78px;overflow:auto;margin-bottom:7px;padding:7px 10px;font-size:10px}.save-warning button,.save-warning a{font-size:10px;min-height:26px;margin-top:3px}
+ .touch-drag-help{display:block;font-size:9px;font-weight:400;color:#ac98b2;margin-left:5px}.mobile-inbox-count{font-size:9px;line-height:14px;vertical-align:middle}.mobile-editor{z-index:200}
+}
+@media(max-height:650px) and (max-width:760px){.app{padding-top:8px}.topbar{margin-bottom:0}.title-line h1{font-size:22px}.cloudbar{min-height:24px;margin-bottom:3px}.mobile-plan-caption{margin-bottom:5px;font-size:9px}.event-panel,.app[data-mobile-view="inbox"] .event-panel{flex-basis:155px;height:155px}.mobile-schedule-tools button{min-height:27px}.mobile-range-nav button{min-height:26px}}
+
+/* iPhone viewport containment and native-scroll friendly touch surfaces. */
+.touch-drag-ghost{left:0;top:0;max-width:calc(100% - 20px);padding:9px 11px;border-radius:11px;box-shadow:0 6px 20px #4f335322;transform:translate3d(0,0,0);will-change:transform;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}.touch-drag-ghost strong{font-size:12px}.touch-drag-ghost small{font-size:9px;line-height:1.4}.touch-drop-marker{left:0;top:0;will-change:transform;transform:translate3d(0,0,0)}
+@media(max-width:760px){
+ html,body{width:100%;max-width:100%;min-width:0;overflow-x:hidden;overscroll-behavior-x:none;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+ .app{width:100%;max-width:100%;min-width:0;margin:0;padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right));overflow:hidden}
+ .topbar,.cloudbar,.mobile-plan-caption,.layout,.panel,.date-stream,.inbox-list,.day-card,.day-events,.event-card{min-width:0;max-width:100%;box-sizing:border-box}
+ .topbar,.cloudbar,.layout,.panel,.date-stream,.inbox-list,.day-card,.event-card{width:100%}
+ .date-stream,.inbox-list{overflow-x:hidden;overflow-y:auto;overscroll-behavior-x:none;overscroll-behavior-y:contain;touch-action:pan-y;-webkit-overflow-scrolling:touch}
+ .day-card,.day-card.today{margin-left:0;margin-right:0;width:100%;max-width:100%}.day-card.today{padding-left:5px;padding-right:5px}.day-events{width:100%;overflow:visible}
+ .event-card{overflow:visible;margin-left:0;margin-right:0;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+ .title-line h1{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.title-line #settingsButton{flex:0 0 32px}
+ .event-info{flex:1 1 0%;width:0;min-width:0;max-width:100%;pointer-events:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+ .event-title,.event-notes,.event-meta,.event-tag{max-width:100%;overflow-wrap:anywhere;word-break:break-word;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+ .event-actions{flex:0 0 64px;width:64px;min-width:64px;max-width:64px;margin:0;gap:0}
+ .event-actions>button.touch-drag-handle{flex:0 0 36px;width:36px;min-width:36px;max-width:36px;height:36px;min-height:36px;padding:0;border:0;border-radius:8px;background:#f6f0f7;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;-webkit-user-drag:none}
+ .touch-drag-handle svg{width:14px;height:20px;pointer-events:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}.touch-drag-handle svg *{pointer-events:none}
+ .event-menu{flex:0 0 28px;width:28px;min-width:0}.event-menu>summary{width:28px;min-width:0;height:36px;min-height:36px;margin:0;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+ .mobile-schedule-tools,.mobile-range-nav{min-width:0;max-width:100%}.mobile-schedule-tools button,.mobile-range-nav button,.mobile-day-add{min-width:0;max-width:100%}
+ .mobile-day-add{width:100%;overflow:hidden}.mobile-plan-caption{font-size:10px;overflow-wrap:anywhere}
+ .touch-drag-active .event-card,.touch-drag-active .day-card{transition:none!important}.touch-drop-target{outline:0!important;box-shadow:inset 0 0 0 2px #d0a8c9!important}
+ .mobile-editor{width:100%;max-width:100%;overflow-x:hidden}.mobile-editor input,.mobile-editor textarea{user-select:text;-webkit-user-select:text;-webkit-touch-callout:default}
+}
+
+/* This native modal lives outside both scroll panes, so neither pane can clip it. */
+.event-actions-dialog{position:fixed;inset:auto 12px max(12px,env(safe-area-inset-bottom));margin:0 auto;width:calc(100% - 24px);max-width:420px;max-height:80dvh;padding:0;border:1px solid #e9e0ec;border-radius:20px;background:#fff;color:var(--text);box-shadow:0 18px 55px #4f355538;overflow:hidden}.event-actions-dialog:not([open]){display:none}.event-actions-dialog::backdrop{background:#342a403d}.event-actions-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:17px 18px 13px;border-bottom:1px solid #f1ebf3}.event-actions-heading>div{min-width:0}.event-actions-heading h2{margin:0;color:var(--title);font-size:15px;line-height:1.5;font-weight:650;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.event-actions-heading p{font-size:10px;color:#a08ca9;margin:4px 0 0}.event-actions-close{width:32px;min-width:32px;min-height:32px;padding:0;border:0;border-radius:50%;background:#f6f1f7;color:#a08aab;font-size:20px}.event-actions-options{display:grid;padding:6px}.event-actions-options>button{display:flex;align-items:center;gap:12px;width:100%;min-height:52px;padding:12px 15px;border:0;border-radius:12px;background:#fff;color:#776080;text-align:left;font-size:14px;font-weight:550}.event-actions-options>button:active{background:#f7f1f8}.event-actions-options svg{width:18px;height:18px;flex:0 0 18px;pointer-events:none}.event-actions-options .action-delete{color:#b97587}.event-more{display:none}
+@media(max-width:760px){.event-actions>button.event-more{display:flex!important;flex:0 0 28px;align-items:center;justify-content:center;width:28px;min-width:28px;max-width:28px;min-height:36px;height:36px;padding:0;border:0;border-radius:8px;background:transparent;color:#ac98b3;touch-action:manipulation;-webkit-touch-callout:none;user-select:none;-webkit-user-select:none}.event-more svg{width:18px;height:18px;pointer-events:none}.event-more:active{background:#f3edf5}.date-stream{overflow-anchor:none}}
+
+
+.save-status{padding:12px;margin:8px 0;background:#fff6e9;border:1px solid #e5c998;border-radius:12px;font-size:13px}.save-status[hidden]{display:none}.save-status button{margin:6px 4px 0 0;padding:8px;font-size:12px}
+</style>
 </head>
 
 <body>
-  <div class="app">
+<div class="app" id="workspaceRoot"><div class="cloudbar"><span class="sync-dot" aria-hidden="true"></span><span id="syncStatus" role="status" aria-live="polite">仅保存在本浏览器 · 不自动同步</span><details class="cloud-menu"><summary aria-label="导入和导出备份">备份 <span aria-hidden="true">⌄</span></summary><div class="cloud-menu-content"><strong>独立 HTML · 本机存储</strong><button id="exportData" type="button">导出备份</button><label class="import-label">导入备份<input id="importData" type="file" accept="application/json,.json" hidden></label></div></details></div>
     <header class="topbar">
       <div>
         <p class="eyebrow">MY DAILY EVENT WORKSPACE</p>
@@ -936,7 +1035,7 @@
             id="settingsButton"
             title="工作台设置"
           >
-            ⚙
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m9 3-.7 2.2-2 .9-2.1-.5-1.5 2.6 1.5 1.7-.2 2.2L2.5 14 4 16.6l2.2-.4 1.8 1.3.5 2.5h3l1-2.2 2.2-.7 2.1.5 1.5-2.6-1.4-1.8.2-2.2 1.5-1.8-1.5-2.6-2.3.5-1.8-1.3-.5-2.5z" transform="translate(1 0)"/><circle cx="12" cy="11.5" r="3"/></svg>
           </button>
         </div>
 
@@ -956,9 +1055,10 @@
       </div>
     </header>
 
-    <div id="saveStatus" class="save-status" role="status" aria-live="polite" hidden><div id="saveStatusText"></div><button type="button" class="secondary-button" id="retrySave">重试保存 / 读取</button><button type="button" class="secondary-button" id="keepLocalChanges" hidden>相同内容保留本窗口修改</button><button type="button" class="secondary-button" id="loadOtherChanges" hidden>放弃未保存修改并加载最新</button></div>
+<div id="saveStatus" class="save-status" role="status" aria-live="polite" hidden><div id="saveStatusText"></div><button type="button" class="secondary-button" id="retrySave">重试保存 / 读取</button><button type="button" class="secondary-button" id="keepLocalChanges" hidden>相同内容保留本窗口修改</button><button type="button" class="secondary-button" id="loadOtherChanges" hidden>放弃未保存修改并加载最新</button></div>
+    <p class="mobile-plan-caption" id="planningHint">拖动 ⠿ 安排日期 / 移回待办；滑动卡片浏览。</p>
     <main class="layout">
-      <section class="panel date-panel">
+      <section class="panel date-panel" id="schedulePanel">
         <div class="panel-header">
           <div>
             <div class="schedule-title-row">
@@ -982,13 +1082,13 @@
           </span>
         </div>
 
-        <div class="date-stream" id="dateStream"></div>
+        <div class="mobile-schedule-tools"><button type="button" data-mobile-action="today">回到今天</button><button type="button" data-mobile-action="calendar"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="4" y="5" width="16" height="16" rx="3"/><path d="M8 3v4m8-4v4M4 11h16"/></svg>选择日期</button></div><div class="date-stream" id="dateStream"></div><div class="mobile-range-nav"><button type="button" data-mobile-range="-7">‹ 上一周</button><button type="button" data-mobile-range="7">下一周 ›</button></div>
       </section>
 
-      <aside class="panel event-panel">
+      <aside class="panel event-panel" id="inboxPanel">
         <div class="panel-header">
           <div>
-            <h2 class="panel-title">待办事件池</h2>
+            <h2 class="panel-title">待办池 <span class="mobile-inbox-count" id="mobileInboxCount">0</span><span class="touch-drag-help">按住 ⠿ 拖动安排</span></h2>
 
             <p class="panel-description">
               这里保存尚未安排日期的事件，可以拖动事件改变顺序。
@@ -1086,9 +1186,11 @@
           </div>
         </form>
       </aside>
-    </main>
+    </main><button type="button" class="mobile-create" id="mobileCreateButton"><span aria-hidden="true">＋</span>新增事件</button>
   </div>
 
+<dialog id="eventActionsDialog" class="event-actions-dialog" aria-labelledby="eventActionsTitle"><header class="event-actions-heading"><div><h2 id="eventActionsTitle">事件操作</h2><p id="eventActionsLocation"></p></div><button type="button" class="event-actions-close" id="eventActionsClose" aria-label="关闭操作菜单">×</button></header><div class="event-actions-options"><button type="button" id="eventActionsEdit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 3 5 5-12 12-6 1 1-6zM14 5l5 5"/></svg>编辑事件</button><button type="button" id="eventActionsDelete" class="action-delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7m4-7v7"/></svg>删除事件</button></div></dialog>
+<dialog id="mobileEditor" class="mobile-editor" aria-labelledby="mobileEditorTitle"><header class="mobile-editor-heading"><div><h2 id="mobileEditorTitle">新增事件</h2><p id="mobileEditorHint">安排日期、记录想法，按自己的节奏来。</p></div><button type="button" id="mobileEditorClose" class="mobile-editor-close" aria-label="关闭编辑">×</button></header><div id="mobileEditorWarning" class="mobile-editor-warning" role="status" hidden></div></dialog>
   <div class="modal-layer" id="largeCalendarModal">
     <div class="modal">
       <div class="calendar-modal-header">
@@ -1252,6 +1354,7 @@
   </div>
 
   <script>
+
     const STORAGE_KEY = "daily_event_workbench_github_share_v1";
 
     const weekdays = [
@@ -1293,8 +1396,13 @@
 
     let state = loadState();
 
-    let visibleStart = startOfDay(new Date());
-    let visibleEnd = addDays(visibleStart, 90);
+
+const equal=sameValue;
+let pendingDateAnchor=null, historyLoading=false, historyLastTop=0, historyPull=null;
+let actionEventId=null, actionTrigger=null;
+    let visibleStart = addDays(startOfDay(new Date()), isMobileLayout() ? -7 : 0);
+    let visibleEnd = addDays(startOfDay(new Date()), isMobileLayout() ? 6 : 90);
+    if(isMobileLayout())pendingDateAnchor=dateKey(new Date());
 
     let largeCalendarMonth = new Date(
       visibleStart.getFullYear(),
@@ -1504,6 +1612,9 @@
     function updateSaveStatus() {
       const banner = document.getElementById("saveStatus");
       if (!banner) return;
+      const warning=document.getElementById('mobileEditorWarning');
+      if(warning){warning.hidden=!persistence.error;warning.textContent=persistence.error;}
+      document.getElementById('syncStatus').textContent=persistence.error?'本机保存需要处理':'仅保存在本浏览器 · 不自动同步';
       banner.hidden = !persistence.error && !persistence.notice;
       document.getElementById("saveStatusText").textContent = persistence.error || persistence.notice;
       document.getElementById("retrySave").hidden = persistence.conflict;
@@ -1513,7 +1624,7 @@
     }
 
     function refreshOtherWindows() {
-      if (persistence.dirty || persistence.pendingRecord) return;
+      if (touchDrag?.active || persistence.dirty || persistence.pendingRecord) return;
       try {
         const stored = readStoredState();
         if (!sameValue(stored.state, persistence.base)) {
@@ -1532,6 +1643,312 @@
         updateSaveStatus();
       }
     }
+
+
+function isMobileLayout(){return !!window.matchMedia?.('(max-width: 760px)').matches;}
+let editorAnchor=null, editorInitial='', mobileCurrentView='schedule';
+function editorSignature(){return ['editingEventId','eventTitle','eventStatus','eventDate','eventColor','eventAlert','eventNotes'].map(id=>document.getElementById(id).value).join('\u001f');}
+function setMobileView(view,scroll=true){
+ mobileCurrentView='planning';
+ document.getElementById('workspaceRoot').dataset.mobileView='planning';
+}
+function adaptMobileEditor(){
+ const form=document.getElementById('eventForm'),dialog=document.getElementById('mobileEditor');
+ if(!editorAnchor){editorAnchor=document.createComment('event-editor-position');form.before(editorAnchor);}
+ if(isMobileLayout()){
+  if(form.parentElement!==dialog)dialog.appendChild(form);
+ }else{
+  if(dialog.open)dialog.close();
+  if(form.parentElement===dialog)editorAnchor.after(form);
+ }
+}
+function openMobileEditor(){
+ adaptMobileEditor();
+ document.getElementById('mobileEditorTitle').textContent=document.getElementById('editingEventId').value?'编辑事件':'新增事件';
+ document.getElementById('mobileEditorHint').textContent=document.getElementById('editingEventId').value?'修改事件内容，排期也可以直接拖动调整。':'先记进待办池；日期可以留空，稍后拖动安排。';
+ editorInitial=editorSignature();
+ const dialog=document.getElementById('mobileEditor');if(!dialog.open)dialog.showModal();
+ requestAnimationFrame(()=>document.getElementById('eventTitle').focus({preventScroll:true}));
+}
+function closeMobileEditor(force=false){
+ const dialog=document.getElementById('mobileEditor');
+ if(!dialog.open)return;
+ if(!force&&editorSignature()!==editorInitial&&!confirm('还有未保存的编辑，确定关闭？'))return;
+ dialog.close();
+}
+function createForDate(key){
+ clearEventForm();document.getElementById('eventDate').value=key;focusEventForm();
+}
+function updateMobileCounts(){
+ const badge=document.getElementById('mobileInboxCount');if(badge)badge.textContent=String(getInboxEvents().length);
+}
+function updateMobileViewport(){
+ dragLayoutVersion++;if(touchDrag?.active){touchDrag.geometry=null;queueTouchFrame();}
+ document.documentElement.style.setProperty('--mobile-viewport-height',(window.visualViewport?.height||window.innerHeight)+'px');
+}
+let touchDrag=null, touchScrollFrame=null, dragLayoutVersion=0, deferredDragRemote=null;
+function touchPoint(event,id){return Array.from(event.touches?.length?event.touches:event.changedTouches||[]).find(touch=>touch.identifier===id);}
+function dragTime(){return globalThis.performance?.now?.()||Date.now();}
+function queueTouchFrame(){if(touchDrag?.active&&touchScrollFrame===null)touchScrollFrame=requestAnimationFrame(touchAutoScroll);}
+function refreshTouchSource(){
+ dragLayoutVersion++;
+ if(!touchDrag?.active)return;
+ touchDrag.geometry=null;
+ if(touchDrag.card?.isConnected!==false){touchDrag.card.draggable=false;touchDrag.card.classList.add('is-touch-dragging');}
+ else document.querySelectorAll('[data-event-card]').forEach(card=>{
+  if(card.dataset.eventCard===touchDrag.eventId){card.classList.add('is-touch-dragging');card.draggable=false;touchDrag.card=card;}
+ });
+ queueTouchFrame();
+}
+function touchSurface(x,y){
+ const hit=document.elementFromPoint(x,y);if(!hit)return null;
+ const pool=hit.closest('#inboxPanel');
+ if(pool){const list=document.getElementById('inboxList');return {kind:'inbox',element:list,container:list,scroll:list};}
+ const day=hit.closest('[data-day-card]');
+ return day?{kind:'day',date:day.dataset.dayCard,element:day,container:day.querySelector('.day-events')||day,scroll:document.getElementById('dateStream')}:null;
+}
+function measureTouchTarget(surface,panelRect){
+ const cached=touchDrag.geometry;
+ if(cached&&cached.element===surface.element&&cached.version===dragLayoutVersion)return cached;
+ const scrollTop=surface.scroll.scrollTop;
+ const cards=Array.from(surface.container.querySelectorAll('[data-event-card]')).filter(card=>card.dataset.eventCard!==touchDrag.eventId);
+ const metrics=cards.map(card=>{const rect=card.getBoundingClientRect();return {top:rect.top-panelRect.top+scrollTop,bottom:rect.bottom-panelRect.top+scrollTop,middle:rect.top+rect.height/2-panelRect.top+scrollTop};});
+ const bounds=surface.container.getBoundingClientRect();
+ const geometry={element:surface.element,version:dragLayoutVersion,metrics,left:bounds.left,width:bounds.width,emptyTop:bounds.top-panelRect.top+scrollTop+12};
+ touchDrag.geometry=geometry;return geometry;
+}
+function findTouchPlacement(surface,panelRect){
+ const geometry=measureTouchTarget(surface,panelRect),y=touchDrag.y-panelRect.top+surface.scroll.scrollTop;
+ let lo=0,hi=geometry.metrics.length;
+ while(lo<hi){const mid=(lo+hi)>>1;if(y<geometry.metrics[mid].middle)hi=mid;else lo=mid+1;}
+ const index=lo;
+ const contentTop=geometry.metrics[index]?geometry.metrics[index].top-3:geometry.metrics.at(-1)?geometry.metrics.at(-1).bottom+3:geometry.emptyTop;
+ const top=Math.max(panelRect.top+2,Math.min(panelRect.bottom-4,panelRect.top+contentTop-surface.scroll.scrollTop));
+ return {...surface,index,markerX:geometry.left+2,markerY:top,markerWidth:Math.max(24,geometry.width-4)};
+}
+function paintTouchDrag(timestamp,allowScroll=true){
+ if(!touchDrag?.active)return false;
+ const drag=touchDrag,now=Number.isFinite(timestamp)?timestamp:dragTime();
+ const elapsed=drag.lastTime===null?16:Math.max(4,Math.min(32,now-drag.lastTime));drag.lastTime=now;
+ // Read geometry first; all visual writes happen below. Card positions are
+ // cached in scroll-content coordinates, so scrolling needs no per-card reads.
+ const stream=document.getElementById('dateStream'),inbox=document.getElementById('inboxList');
+ const streamRect=stream.getBoundingClientRect(),inboxRect=inbox.getBoundingClientRect();
+ const surface=touchSurface(drag.x,drag.y);
+ const target=surface?findTouchPlacement(surface,surface.scroll===stream?streamRect:inboxRect):null;
+ let scrollTask=null;
+ if(allowScroll)for(const [panel,rect] of [[stream,streamRect],[inbox,inboxRect]]){
+  if(drag.x<rect.left||drag.x>rect.right||drag.y<rect.top||drag.y>rect.bottom)continue;
+  const edge=Math.min(36,rect.height/4);let velocity=0;
+  if(drag.y<rect.top+edge)velocity=-320*(1-(drag.y-rect.top)/edge);
+  else if(drag.y>rect.bottom-edge)velocity=320*(1-(rect.bottom-drag.y)/edge);
+  const maximum=Math.max(0,panel.scrollHeight-panel.clientHeight);
+  const next=Math.max(0,Math.min(maximum,panel.scrollTop+velocity*elapsed/1000));
+  if(velocity&&Math.abs(next-panel.scrollTop)>.01)scrollTask={panel,next};
+ }
+ const width=drag.ghostWidth;
+ const x=Math.max(10,Math.min(drag.viewportWidth-width-10,drag.x-width/2));
+ const y=Math.max(10,drag.y-62);
+ drag.ghost.style.transform=`translate3d(${x}px,${y}px,0)`;
+ if(drag.target?.element!==target?.element){drag.target?.element.classList.remove('touch-drop-target');target?.element.classList.add('touch-drop-target');}
+ drag.target=target;
+ drag.marker.hidden=!target;
+ if(target){
+  if(drag.markerWidth!==target.markerWidth){drag.marker.style.width=target.markerWidth+'px';drag.markerWidth=target.markerWidth;}
+  drag.marker.style.transform=`translate3d(${target.markerX}px,${target.markerY}px,0)`;
+ }
+ const hintKey=target?target.kind+':'+(target.date||'')+':'+target.index:'none';
+ if(drag.hintKey!==hintKey){
+  drag.hintKey=hintKey;
+  if(!target)drag.hint.textContent='拖到日期栏安排，拖回待办池暂存';
+  else if(target.kind==='inbox')drag.hint.textContent='松开返回待办池 · 第 '+(target.index+1)+' 位';
+  else{const date=dateFromKey(target.date);drag.hint.textContent='松开安排到 '+(date.getMonth()+1)+'月'+date.getDate()+'日 · 第 '+(target.index+1)+' 位';}
+ }
+ if(scrollTask){scrollTask.panel.scrollTop=scrollTask.next;return true;}
+ return false;
+}
+function touchAutoScroll(timestamp){
+ touchScrollFrame=null;
+ if(paintTouchDrag(timestamp,true))queueTouchFrame();
+}
+function beginTouchDrag(){
+ if(!touchDrag||!getEvent(touchDrag.eventId))return;
+ touchDrag.active=true;touchDrag.lastTime=null;
+ touchDrag.viewportWidth=document.documentElement.clientWidth||window.innerWidth;
+ touchDrag.ghostWidth=Math.min(200,touchDrag.viewportWidth-20);
+ const ghost=document.createElement('div');ghost.className='touch-drag-ghost';ghost.setAttribute('aria-hidden','true');ghost.style.width=touchDrag.ghostWidth+'px';
+ const title=document.createElement('strong');title.textContent=getEvent(touchDrag.eventId).title;
+ const hint=document.createElement('small');ghost.appendChild(title);ghost.appendChild(hint);document.body.appendChild(ghost);
+ const marker=document.createElement('div');marker.className='touch-drop-marker';marker.hidden=true;document.body.appendChild(marker);
+ touchDrag.ghost=ghost;touchDrag.hint=hint;touchDrag.marker=marker;
+ touchDrag.card.classList.add('is-touch-dragging');document.body.classList.add('touch-drag-active');
+ window.getSelection?.()?.removeAllRanges();
+ queueTouchFrame();
+}
+function cleanupTouchDrag(){
+ if(touchScrollFrame!==null){cancelAnimationFrame(touchScrollFrame);touchScrollFrame=null;}
+ if(touchDrag){if(touchDrag.card)touchDrag.card.draggable=true;touchDrag.card?.classList.remove('is-touch-dragging');touchDrag.target?.element.classList.remove('touch-drop-target');touchDrag.ghost?.remove();touchDrag.marker?.remove();}
+ document.body.classList.remove('touch-drag-active');touchDrag=null;
+}
+function resumeAfterTouch(){refreshOtherWindows();updateSaveStatus();}
+function finishTouchDrag(cancelled=false){
+ if(!touchDrag)return false;
+ if(touchDrag.active&&!cancelled)paintTouchDrag(dragTime(),false);
+ const drag=touchDrag,target=drag.target,active=drag.active;
+ cleanupTouchDrag();
+ if(!active||cancelled||!target||!getEvent(drag.eventId)){resumeAfterTouch();return false;}
+ if(target.kind==='day')insertEventIntoDay(drag.eventId,target.date,target.index);
+ else moveEventToInbox(drag.eventId,target.index);
+ renderAll();resumeAfterTouch();
+ const guide=document.getElementById('planningHint');
+ if(guide){guide.textContent=target.kind==='inbox'?'已移回待办池，可再次拖到任意日期。':'已安排到 '+target.date+'，可以继续拖动调整。';setTimeout(()=>{guide.textContent='拖动 ⠿ 安排日期 / 移回待办；滑动卡片浏览。';},2500);}
+ return true;
+}
+function appendMobileDates(){
+ const dates=document.getElementById('dateStream'),from=addDays(visibleEnd,1);visibleEnd=addDays(visibleEnd,7);
+ let markup='';for(let date=from;date<=visibleEnd;date=addDays(date,1))markup+=renderDayCard(date);
+ dates.insertAdjacentHTML('beforeend',markup);refreshTouchSource();updateCurrentMonthLabel();updateDateRangeHint();
+}
+function initializeTouchPlanning(){
+ document.addEventListener('touchstart',event=>{
+  if(!isMobileLayout()||event.touches.length!==1)return;
+  // Only the dedicated, non-text grip starts a drag. Card-body swipes retain
+  // native momentum scrolling; there is no delayed text long-press gesture.
+  const handle=event.target.closest('[data-touch-drag]');if(!handle)return;
+  const card=handle.closest?.('[data-event-card]')||event.target.closest('[data-event-card]');if(!card)return;
+  event.preventDefault();cleanupTouchDrag();
+  const point=event.touches[0];card.draggable=false;
+  touchDrag={eventId:card.dataset.eventCard,card,identifier:point.identifier,x:point.clientX,y:point.clientY,active:false,target:null,geometry:null};
+  beginTouchDrag();
+ },{passive:false});
+ document.addEventListener('touchmove',event=>{
+  if(!touchDrag)return;
+  if(event.touches.length!==1){finishTouchDrag(true);return;}
+  const point=touchPoint(event,touchDrag.identifier);if(!point)return;
+  event.preventDefault();touchDrag.x=point.clientX;touchDrag.y=point.clientY;queueTouchFrame();
+ },{passive:false});
+ document.addEventListener('touchend',event=>{
+  if(!touchDrag)return;
+  const point=touchPoint(event,touchDrag.identifier);if(point){touchDrag.x=point.clientX;touchDrag.y=point.clientY;}
+  event.preventDefault();finishTouchDrag();
+ },{passive:false});
+ document.addEventListener('touchcancel',()=>finishTouchDrag(true),{passive:true});
+ document.addEventListener('contextmenu',event=>{if(touchDrag?.active||isMobileLayout()&&event.target.closest('.event-card'))event.preventDefault();});
+ document.addEventListener('selectstart',event=>{if(isMobileLayout()&&event.target.closest('.event-card'))event.preventDefault();});
+ const dates=document.getElementById('dateStream');let extending=false;
+ dates.addEventListener('scroll',()=>{
+  if(!isMobileLayout()||extending)return;
+  updateCurrentMonthLabel();
+  if(dates.scrollTop+dates.clientHeight<dates.scrollHeight-90)return;
+  extending=true;appendMobileDates();requestAnimationFrame(()=>{extending=false;});
+ });
+}
+
+function firstVisibleDateKey(){
+ const dates=document.getElementById('dateStream'),top=dates.getBoundingClientRect().top+8;
+ const card=Array.from(dates.querySelectorAll('[data-day-card]')).find(item=>item.getBoundingClientRect().bottom>top);
+ return card?.dataset.dayCard||dateKey(new Date());
+}
+function scrollMobileDateTo(key,behavior='auto'){
+ const dates=document.getElementById('dateStream'),target=document.querySelector(`[data-day-card="${key}"]`);
+ if(!target)return false;
+ const top=Math.max(0,dates.scrollTop+target.getBoundingClientRect().top-dates.getBoundingClientRect().top-2);
+ dates.scrollTo({top,behavior});historyLastTop=top;return true;
+}
+function prependMobileDates(){
+ if(historyLoading||!isMobileLayout())return false;
+ historyLoading=true;
+ const dates=document.getElementById('dateStream'),anchor=dates.firstElementChild;
+ const before=anchor?.getBoundingClientRect().top,oldHeight=dates.scrollHeight,oldStart=new Date(visibleStart);
+ visibleStart=addDays(visibleStart,-7);
+ let markup='';for(let date=new Date(visibleStart);date<oldStart;date=addDays(date,1))markup+=renderDayCard(date);
+ dates.insertAdjacentHTML('afterbegin',markup);
+ // Retain the same visible card even in engines that also perform scroll anchoring.
+ const delta=anchor?anchor.getBoundingClientRect().top-before:dates.scrollHeight-oldHeight;
+ dates.scrollTop=Math.max(0,dates.scrollTop)+delta;
+ historyLastTop=dates.scrollTop;
+ refreshTouchSource();updateCurrentMonthLabel();updateDateRangeHint();
+ requestAnimationFrame(()=>{historyLoading=false;});return true;
+}
+function initializeDateHistory(){
+ const dates=document.getElementById('dateStream');historyLastTop=Math.max(0,dates.scrollTop);
+ dates.addEventListener('scroll',()=>{
+  if(!isMobileLayout()||historyLoading)return;
+  const top=Math.max(0,dates.scrollTop),towardPast=top<historyLastTop;
+  historyLastTop=top;
+  if(towardPast&&top<90)prependMobileDates();
+ });
+ dates.addEventListener('touchstart',event=>{
+  if(!isMobileLayout()||touchDrag?.active||event.touches.length!==1||event.target.closest('[data-touch-drag]')){historyPull=null;return;}
+  const touch=event.touches[0];historyPull={id:touch.identifier,y:touch.clientY,startedAtTop:dates.scrollTop<=1};
+ },{passive:true});
+ dates.addEventListener('touchmove',event=>{
+  if(!historyPull||!historyPull.startedAtTop||historyLoading||touchDrag?.active)return;
+  const touch=Array.from(event.touches).find(item=>item.identifier===historyPull.id);
+  if(touch&&touch.clientY-historyPull.y>44&&dates.scrollTop<=1){historyPull=null;prependMobileDates();}
+ },{passive:true});
+ dates.addEventListener('touchend',()=>{historyPull=null;},{passive:true});
+ dates.addEventListener('touchcancel',()=>{historyPull=null;},{passive:true});
+}
+function closeEventActions(restoreFocus=true){
+ const dialog=document.getElementById('eventActionsDialog');if(dialog.open)dialog.close();
+ const trigger=actionTrigger;actionEventId=null;actionTrigger=null;
+ if(restoreFocus&&trigger?.isConnected!==false)trigger?.focus?.({preventScroll:true});
+}
+function refreshEventActions(){
+ const dialog=document.getElementById('eventActionsDialog');if(!dialog?.open)return;
+ const event=getEvent(actionEventId);if(!event){closeEventActions(false);return;}
+ document.getElementById('eventActionsTitle').textContent=event.title;
+ document.getElementById('eventActionsLocation').textContent=event.date?'已安排 · '+event.date:'待办池 · 尚未安排日期';
+}
+function openEventActions(eventId,trigger){
+ if(touchDrag?.active||!getEvent(eventId))return false;
+ actionEventId=eventId;actionTrigger=trigger;
+ const dialog=document.getElementById('eventActionsDialog');if(!dialog.open)dialog.showModal();
+ refreshEventActions();return true;
+}
+function initializeEventActions(){
+ document.addEventListener('click',event=>{
+  const button=event.target.closest('[data-event-menu]');if(!button)return;
+  event.preventDefault();openEventActions(button.dataset.eventMenu,button);
+ });
+ document.getElementById('eventActionsClose').onclick=()=>closeEventActions();
+ document.getElementById('eventActionsEdit').onclick=()=>{
+  const id=actionEventId;closeEventActions(false);if(getEvent(id))editEvent(id);
+ };
+ document.getElementById('eventActionsDelete').onclick=()=>{
+  const id=actionEventId;closeEventActions(false);if(getEvent(id))deleteEvent(id);
+ };
+ const dialog=document.getElementById('eventActionsDialog');
+ dialog.addEventListener('cancel',event=>{event.preventDefault();closeEventActions();});
+ dialog.addEventListener('click',event=>{
+  if(event.target!==dialog)return;
+  const rect=dialog.getBoundingClientRect();
+  if(event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom)closeEventActions();
+ });
+}
+
+function initializeMobileUI(){
+ adaptMobileEditor();setMobileView('schedule',false);updateMobileCounts();updateMobileViewport();
+ document.getElementById('mobileEditorClose').onclick=()=>closeMobileEditor();
+ document.getElementById('mobileCreateButton').onclick=()=>document.getElementById('newEventButton').click();
+ document.getElementById('mobileEditor').addEventListener('cancel',event=>{event.preventDefault();closeMobileEditor();});
+ document.getElementById('mobileEditor').addEventListener('click',event=>{if(event.target===event.currentTarget){const rect=event.currentTarget.getBoundingClientRect();if(event.clientY<rect.top)closeMobileEditor();}});
+ document.addEventListener('click',event=>{
+  const create=event.target.closest('[data-create-date]');if(create){createForDate(create.dataset.createDate);return;}
+  const action=event.target.closest('[data-mobile-action]');if(action){document.getElementById(action.dataset.mobileAction==='today'?'todayButton':'largeCalendarButton').click();return;}
+  const range=event.target.closest('[data-mobile-range]');if(range){jumpToDate(dateKey(addDays(dateFromKey(firstVisibleDateKey()),Number(range.dataset.mobileRange))),{smooth:false});return;}
+  document.querySelectorAll('.cloud-menu[open]').forEach(menu=>{if(!menu.contains(event.target)||event.target.closest('button,a'))menu.open=false;});
+ });
+ const media=window.matchMedia?.('(max-width: 760px)');
+ media?.addEventListener?.('change',()=>{
+  adaptMobileEditor();
+  if(isMobileLayout()){const today=startOfDay(new Date());visibleStart=addDays(today,-7);visibleEnd=addDays(today,6);pendingDateAnchor=dateKey(today);}
+  else visibleEnd=addDays(visibleStart,90);
+  cleanupTouchDrag();renderAll({keepScroll:false});
+ });
+ window.visualViewport?.addEventListener('resize',updateMobileViewport);
+}
 
     function startOfDay(value) {
       const date = new Date(value);
@@ -1825,23 +2242,7 @@
             </div>
           </div>
 
-          <div class="event-actions">
-            <button
-              class="icon-button"
-              data-edit-event="${escapeHtml(event.id)}"
-              title="编辑事件"
-            >
-              ✎
-            </button>
-
-            <button
-              class="icon-button delete"
-              data-delete-event="${escapeHtml(event.id)}"
-              title="删除事件"
-            >
-              ×
-            </button>
-          </div>
+          <div class="event-actions"><button type="button" class="touch-drag-handle" data-touch-drag="${escapeHtml(event.id)}" aria-label="按住此把手直接拖动事件" title="按住把手直接拖动，不需要长按文字"><svg viewBox="0 0 16 24" aria-hidden="true" focusable="false"><g fill="currentColor"><circle cx="5" cy="5" r="1.6"/><circle cx="11" cy="5" r="1.6"/><circle cx="5" cy="12" r="1.6"/><circle cx="11" cy="12" r="1.6"/><circle cx="5" cy="19" r="1.6"/><circle cx="11" cy="19" r="1.6"/></g></svg></button><button type="button" class="event-more" data-event-menu="${escapeHtml(event.id)}" aria-label="事件操作：编辑或删除" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></button><button type="button" class="icon-button" data-edit-event="${escapeHtml(event.id)}" title="编辑事件">✎</button><button type="button" class="icon-button delete" data-delete-event="${escapeHtml(event.id)}" title="删除事件">×</button></div>
         </div>
       `;
     }
@@ -1863,7 +2264,7 @@
 
         slotsHtml += `
           <div
-            class="drop-slot"
+            class="drop-slot ${event ? "" : "slot-empty"}"
             data-date="${key}"
             data-slot-index="${index}"
           >
@@ -1873,7 +2274,7 @@
                 : `
                   <div class="empty-slot">
                     拖入事件到这里
-                  </div>
+                  </div><button type="button" class="mobile-day-add" data-create-date="${key}"><span aria-hidden="true">＋</span>安排一件事</button>
                 `
             }
           </div>
@@ -1882,7 +2283,7 @@
 
       return `
         <article
-          class="day-card ${isToday(key) ? "today" : ""}"
+          class="day-card ${isToday(key) ? "today" : ""} ${events.length ? "" : "day-empty"}"
           data-day-card="${key}"
         >
           <div class="day-header">
@@ -1908,7 +2309,7 @@
 
             <div class="day-summary">
               ${counts.total} 件 · 已完成 ${counts.done}
-            </div>
+            </div><button type="button" class="mobile-date-plus" data-create-date="${key}" aria-label="在这一天新增事件">＋</button>
           </div>
 
           <div class="day-events">
@@ -1943,7 +2344,9 @@
         container.scrollTop = 0;
       }
 
+      if(isMobileLayout()&&pendingDateAnchor){const key=pendingDateAnchor;pendingDateAnchor=null;scrollMobileDateTo(key);}
       updateCurrentMonthLabel();
+      refreshTouchSource();
     }
 
     function renderInbox() {
@@ -1955,9 +2358,9 @@
       if (!events.length) {
         container.innerHTML = `
           <div class="inbox-drop-hint">
-            当前没有待安排事件。<br />
-            点击上方“新增事件”，<br />
-            或把左侧事件拖回这里。
+            先把想到的事情记进待办池。<br />
+            新增时日期留空，再拖到日期栏安排。<br />
+            暂时不安排的事件，也可以拖回这里。
           </div>
         `;
 
@@ -1967,6 +2370,7 @@
       container.innerHTML = events
         .map(event => renderEventCard(event, "inbox"))
         .join("");
+      refreshTouchSource();
     }
 
     function getCalendarCells(monthDate) {
@@ -2055,6 +2459,15 @@
     }
 
     function updateCurrentMonthLabel() {
+      if (isMobileLayout()) {
+        const stream=document.getElementById("dateStream");
+        const top=stream.getBoundingClientRect().top+8;
+        const card=Array.from(stream.querySelectorAll('[data-day-card]')).find(item=>item.getBoundingClientRect().bottom>top);
+        const date=card?dateFromKey(card.dataset.dayCard):visibleStart;
+        const label=document.getElementById("currentMonthLabel"),text=`${date.getFullYear()}年${date.getMonth()+1}月`;
+        if(label.textContent!==text)label.textContent=text;
+        return;
+      }
       const container =
         document.getElementById("dateStream");
 
@@ -2092,6 +2505,10 @@
     }
 
     function updateDateRangeHint() {
+      if (isMobileLayout()) {
+        document.getElementById("dateRangeHint").textContent = `${visibleStart.getMonth()+1}/${visibleStart.getDate()} — ${visibleEnd.getMonth()+1}/${visibleEnd.getDate()}`;
+        return;
+      }
       const days =
         Math.round(
           (visibleEnd.getTime() -
@@ -2113,12 +2530,15 @@
         keepScroll: options.keepScroll ?? !firstRender
       });
       renderInbox();
+      updateMobileCounts();
+      refreshEventActions();
       renderLargeCalendar();
       updateDateRangeHint();
       updateSaveStatus();
       if (firstRender) firstRender = false;
       return saved;
     }
+
 
     function removeEventFromAllOrders(eventId) {
       state.inboxOrder = state.inboxOrder.filter(
@@ -2296,6 +2716,7 @@
     }
 
     function focusEventForm() {
+      if (isMobileLayout()) { openMobileEditor(); return; }
       const form =
         document.getElementById("eventForm");
 
@@ -2440,7 +2861,7 @@
         const fields = {title, status, color: color.toUpperCase(),
           alertCount: alertCount === 1 || alertCount === 3 ? alertCount : 0, notes};
         for (const [key, value] of Object.entries(fields)) {
-          if (!editingSnapshot || !sameValue(editingSnapshot[key], value)) event[key] = value;
+          if (!editingSnapshot || !equal(editingSnapshot[key], value)) event[key] = value;
         }
         if (editingSnapshot && date === (editingSnapshot.date || null)) date = oldDate;
         event.date = oldDate;
@@ -2520,7 +2941,13 @@
         }
       }
 
-      if (renderAll()) clearEventForm();
+      if (renderAll()) {
+        clearEventForm();
+        if (isMobileLayout()) {
+          closeMobileEditor(true);
+          if (date) jumpToDate(date, {smooth:false}); else setMobileView('inbox');
+        }
+      }
     }
 
     function celebrate() {
@@ -2575,6 +3002,12 @@
 
 function jumpToDate(key, options = {}) {
   const date = dateFromKey(key);
+  if(isMobileLayout()) {
+    visibleStart=addDays(date,-7);visibleEnd=addDays(date,6);pendingDateAnchor=key;
+    setMobileView('schedule',false);renderDateStream({keepScroll:false});updateDateRangeHint();
+    requestAnimationFrame(()=>scrollMobileDateTo(key,options.smooth===false?'auto':'smooth'));
+    return;
+  }
   const container =
     document.getElementById("dateStream");
 
@@ -2657,7 +3090,7 @@ function jumpToDate(key, options = {}) {
     }
 
     function openSettings() {
-      settingsSnapshot = structuredClone(state.settings);
+      settingsSnapshot = clone(state.settings);
       document.getElementById(
         "settingsTitle"
       ).value = state.settings.title;
@@ -2695,6 +3128,7 @@ function jumpToDate(key, options = {}) {
             return;
           }
 
+          if(touchDrag?.active){event.preventDefault();return;}
           event.dataTransfer.effectAllowed =
             "move";
 
@@ -2875,9 +3309,10 @@ function jumpToDate(key, options = {}) {
 
           const key = dateKey(today);
 
-          visibleStart = today;
+          visibleStart = isMobileLayout() ? addDays(today,-7) : today;
+          if(isMobileLayout())pendingDateAnchor=key;
           visibleEnd =
-            addDays(today, 90);
+            addDays(today, isMobileLayout() ? 6 : 90);
 
           largeCalendarMonth =
             new Date(
@@ -2894,12 +3329,11 @@ requestAnimationFrame(() => {
   const dateStream =
     document.getElementById("dateStream");
 
-  dateStream.scrollTo({
-    top: 0,
-    behavior: "auto"
-  });
+  if(isMobileLayout())scrollMobileDateTo(key);
+  else dateStream.scrollTo({top:0,behavior:"auto"});
 
   updateCurrentMonthLabel();
+  if(isMobileLayout()){setMobileView('schedule',false);window.scrollTo({top:0,behavior:'smooth'});}
 });
 
         }
@@ -2966,7 +3400,7 @@ requestAnimationFrame(() => {
             backgroundColor: document.getElementById("backgroundColor").value.toUpperCase()
           };
           for (const [key, value] of Object.entries(edited)) {
-            if (!settingsSnapshot || !sameValue(settingsSnapshot[key], value)) state.settings[key] = value;
+            if (!settingsSnapshot || !equal(settingsSnapshot[key], value)) state.settings[key] = value;
           }
           if (!renderAll()) return;
           closeModal("settingsModal");
@@ -3118,6 +3552,7 @@ requestAnimationFrame(() => {
       .addEventListener(
         "scroll",
         event => {
+          if(isMobileLayout()) return;
           const container =
             event.currentTarget;
 
@@ -3168,6 +3603,8 @@ requestAnimationFrame(() => {
         }
       );
 
+
+initializeMobileUI();initializeTouchPlanning();initializeDateHistory();initializeEventActions();
     document.getElementById("retrySave").addEventListener("click", () => {
       persistence.notice = "";
       if (persistence.dirty) renderAll();
@@ -3212,11 +3649,20 @@ requestAnimationFrame(() => {
       if (persistence.dirty || persistence.pendingRecord) { event.preventDefault(); event.returnValue = ""; }
     });
 
-    setupDragAndDrop();
-    applySettings();
-    renderAll({
-      keepScroll: false
-    });
-  </script>
+function downloadState(value,name) {
+ const url=URL.createObjectURL(new Blob([JSON.stringify(value,null,2)],{type:'application/json'}));
+ const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+document.getElementById('exportData').onclick=()=>downloadState(state,'每日事件备份-'+dateKey(new Date())+'.json');
+document.getElementById('importData').onchange=async e=>{
+ try {const incoming=JSON.parse(await e.target.files[0].text());
+ if(!Array.isArray(incoming.events)||!incoming.settings||incoming.events.some(x=>!x||typeof x.id!=='string'||typeof x.title!=='string'))throw Error();
+ if(!confirm('导入会替换当前工作台。建议先导出备份，是否继续？'))return;
+ state=normalizeData(incoming);clearEventForm();renderAll();
+ }catch{alert('无法读取备份，请选择每日事件的 JSON 备份文件。');}finally{e.target.value='';}
+};
+
+setupDragAndDrop();applySettings();renderAll({keepScroll:false});
+</script>
 </body>
 </html>

@@ -1,5 +1,30 @@
-# 仅发布明确列出的源码和说明；防止误提交本地数据、密钥和备份。
-/*
-!/.gitignore
-!/README.md
-!/每日事件.html
+# Runtime/dependencies/builds (all versions)
+node_modules/
+dist/
+.next/
+.vinext/
+.wrangler/
+.sites-runtime/
+.git/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+# Secrets and private records
+.env*
+.dev.vars*
+*.pem
+*.key
+*.p12
+*.pfx
+*.sqlite*
+*.db
+*.log
+*.url
+*.zip
+*.tar.gz
+private-data/
+backups/
+每日事件备份-*.json
+本机冲突备份.json
+.DS_Store
+Thumbs.db
